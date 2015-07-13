@@ -5,26 +5,39 @@ import pickle
 from recette import recette
 
 def getListOfRecette():
-	os.chdir("/home/vincent/Documents/python/menu")
+	os.chdir("/home/vincent/Documents/python/Menu")
 	with open('sauvegardeRecette.txt','rb') as fichier:
-		monDePickler = pickle.Unpickler(fichier)
-	try:
-		listOfRecette = monDePickler.load()
-		print("return a list"+listOfRecette)
-		return listOfRecette
-	except:
-		print("exc")
-		return []
+#		print("type of file : {}".format(type(fichier)))
+#		print("content of file : {}".format(fichier))
+		try:
+			monDePickler = pickle.Unpickler(fichier)
+			listOfRecette = monDePickler.load()
+			return listOfRecette
+		except pickle.PicklingError as exc:
+			print("Excpetion raised : {}".format(exc))
+			return []
+		except pickle.PickleError as exc:
+			print("Excpetion raised : {}".format(exc))
+			return []
+		except:
+			print("unknown exception raised")
+			return []
 
 def saveListOfRecette(iList):
-	os.chdir("/home/vincent/Documents/python/menu")
-
-	try:
-		with open('sauvegardeRecette.txt','wb') as fichier:
+	os.chdir("/home/vincent/Documents/python/Menu")
+	with open('sauvegardeRecette.txt','wb') as fichier:
+		try:
 			monPickler = pickle.Pickler(fichier)
 			monPickler.dump(iList)
-	except :
-		print("saveList exc")
+		except pickle.UnPicklingError as exc:
+			print("Excpetion raised : {}".format(exc))
+			return []
+		except pickle.PickleError as exc:
+			print("Excpetion raised : {}".format(exc))
+			return []
+		except:
+			print("unknown exception raised")
+			return []
 	
 print("Que voulez vous faire ?")
 print("Pour entrer un recette, taper 1")
@@ -48,8 +61,10 @@ if choix==1:
 
 elif choix==2:
 	listOfRecette = getListOfRecette()
+	print("Size of the list : {}".format(len(listOfRecette)))
+	print(listOfRecette)
 	for i,elt in enumerate(listOfRecette):
-		print("{} - {}".format(i,elt))
+		print("{} - {}".format(i,elt.name))
 
 elif choix==3:
 	print("TODO, generer le menu")
