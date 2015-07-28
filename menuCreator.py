@@ -3,6 +3,7 @@
 import os
 from tkinter import *
 from recette import *
+from profilSemaine import *
 import pickle
 
 class Frame_Edit_Recette(Frame):
@@ -258,8 +259,15 @@ class Frame_Menu(LabelFrame):
 		self.pack(fill=BOTH)
 		self.bouton_generer = Button(self,text="Generer le menu")	
 		self.bouton_generer.pack()
-		self.bouton_editer = Button(self,text="Editer le profil")	
+		self.bouton_editer = Button(self,text="Editer le profil",command=self.editer_profil_menu)	
 		self.bouton_editer.pack()
+
+
+	def editer_profil_menu(self):
+		self.fenetre_editer_profil = Toplevel()
+		self.fenetre_editer_profil.grab_set()
+		self.fenetre_editer_profil.focus()
+		self.frame_editer_profil = Frame_Edit_ProfilSemaine(self.fenetre_editer_profil)
 
 class Frame_Recette(LabelFrame):
 	"""La frame qui contient les boutons de gestion du menu"""
