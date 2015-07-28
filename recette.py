@@ -5,5 +5,15 @@ class recette:
 	its name,
 	its list of (ingredients)
 	its properties """
-	def __init__(self,iName):
-		self.name = iName
+	def __init__(self):
+		self.name = ""
+		self.prepare_day1 = False
+		self.OK_for_invitee = False
+		self.season = ""
+		self.type_recipe = ""
+
+	def __repr__(self):
+		return "recette : {}; type : {}; saison : {}".format(self.name,
+			self.type_recipe,self.season)
+
+
