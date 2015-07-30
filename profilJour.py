@@ -16,9 +16,9 @@ class profilJour:
 		self.nom = nom
 		self.actif = True
 		self.free = False
-		self.type_repas = ""
 		self.invite = False
-		self.saison = "All"
+		self.saison = ["Toutes"]
+		self.type_repas = ["Salade","Legume"]
 
 	def __repr__(self):
 		return "Le repas de : {} est actif ? : {}. Le choix est libre ? : {}. \
