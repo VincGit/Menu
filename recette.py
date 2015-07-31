@@ -13,7 +13,7 @@ class recette:
 		self.type_recipe = ""
 
 	def __repr__(self):
-		return "recette : {}; type : {}; saison : {}".format(self.name,
-			self.type_recipe,self.season)
+		return "recette : {}; type : {}; saison : {}; OK for invitee ? : {} ".format(self.name,
+			self.type_recipe,self.season,self.OK_for_invitee)
 
 

@@ -4,6 +4,7 @@ import os
 from tkinter import *
 from recette import *
 from profilSemaine import *
+from frameGenerer import *
 import pickle
 
 class Frame_Edit_Recette(Frame):
@@ -166,10 +167,10 @@ class Frame_Ajout_Recette(Frame):
 
 
 		if self.var_OK_invites.get() == 1:
-			self.recette.OK_for_invitee == True
+			self.recette.OK_for_invitee = True
 
 		if self.var_preparer_la_veille.get() == 1:
-			self.recette.prepare_day1 == True
+			self.recette.prepare_day1 = True
 
 		if self.var_legume.get() == 1:
 			self.recette.type_recipe = "legume"
@@ -257,7 +258,7 @@ class Frame_Menu(LabelFrame):
 	def __init__(self,parent_frame):	
 		LabelFrame.__init__(self,parent_frame,text="Generation des menus")
 		self.pack(fill=BOTH)
-		self.bouton_generer = Button(self,text="Generer le menu")	
+		self.bouton_generer = Button(self,text="Generer le menu",command=self.generer_menu)	
 		self.bouton_generer.pack()
 		self.bouton_editer = Button(self,text="Editer le profil",command=self.editer_profil_menu)	
 		self.bouton_editer.pack()
@@ -268,6 +269,14 @@ class Frame_Menu(LabelFrame):
 		self.fenetre_editer_profil.grab_set()
 		self.fenetre_editer_profil.focus()
 		self.frame_editer_profil = Frame_Edit_ProfilSemaine(self.fenetre_editer_profil)
+
+	def generer_menu(self):
+		self.fenetre_generer_menu = Toplevel()
+		self.fenetre_generer_menu.grab_set()
+		self.fenetre_generer_menu.focus()
+		self.frame_generer_menu = Frame_generer_menu(self.fenetre_generer_menu)
+		
+
 
 class Frame_Recette(LabelFrame):
 	"""La frame qui contient les boutons de gestion du menu"""
