@@ -2,7 +2,7 @@
 
 import os
 import pickle
-from recette import recette
+from Course import Course
 
 def getListOfRecette():
 	os.chdir("/home/vincent/Documents/python/Menu")
@@ -40,8 +40,8 @@ def saveListOfRecette(iList):
 			return []
 	
 print("Que voulez vous faire ?")
-print("Pour entrer un recette, taper 1")
-print("Pour voir les recettes taper 2")
+print("Pour entrer un Course, taper 1")
+print("Pour voir les Courses taper 2")
 print("Pour voir le menu de la semaine, taper 3")
 choix = int(input("Alors ?"))
 
@@ -49,12 +49,12 @@ print("choix :{} ".format(choix))
 
 
 if choix==1:
-	nom = input("nom de la recette :")
-	Recette = recette(nom)
+	nom = input("nom de la Course :")
+	Recette = Course(nom)
 
-	print("nom de la recette : {} ".format(Recette.name))
+	print("nom de la Course : {} ".format(Recette.name))
 
-	#sauvegarder la recette
+	#sauvegarder la Course
 	listOfRecette = getListOfRecette()
 	listOfRecette.append(Recette)
 	saveListOfRecette(listOfRecette)	

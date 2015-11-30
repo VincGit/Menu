@@ -2,27 +2,57 @@
 
 import os
 from tkinter import *
-from recette import *
+from Course import *
 from profilJour import *
 import pickle
 
-class Frame_Edit_ProfilSemaine(Frame):
-	"""Cette frame contient tous le champs pour voir et editer les recettes"""
-	def __init__(self, parentFrame):
-		Frame.__init__(self,parentFrame, width=768, height=867)
-		self.pack(fill=BOTH)
-		self.parentFrame=parentFrame	
-		
-		self.bouton_sauver = Button(self,text="Sauvegarder",command=self.sauvegarderProfil)
-		self.bouton_sauver.pack()
 
-		self.bouton_quitter = Button(self,text="Quitter",command=self.parentFrame.destroy)
-		self.bouton_quitter.pack()
+class MasterFrameEditProfilSemaine(Frame):
+	"""This class inherits from Frame
+	It contains the features to update the week profile"""
+	def __init__(self, parentFrame):
+		Frame.__init__(self,parentFrame)
+		self.parentFrame=parentFrame
+	
+		
+		self.bouton_sauver = Button(parentFrame,text="Sauvegarder",command=self.sauvegarderProfil)
+		self.bouton_sauver.grid(row=0,column=0)
+
+		self.bouton_quitter = Button(parentFrame,text="Quitter",command=self.parentFrame.destroy)
+		self.bouton_quitter.grid(row=0,column=1)
+
+		self.var_bouton_hide = IntVar()		
+		self.bouton_hide = Checkbutton(parentFrame,text="Cacher les jours inactifs",
+			variable=self.var_bouton_hide)
+		self.bouton_hide.grid(row=0,column=2)
+		
+		self.canvas = Canvas(parentFrame, borderwidth=3, background="blue",height=800, width=850)
+		self.frame_edit_profil = FrameEditProfilSemaine(self.canvas)
+		self.scrollbar = Scrollbar(parentFrame,orient="vertical",command=self.canvas.yview)
+		self.canvas.config(scrollregion=self.bbox(ALL),yscrollcommand=self.scrollbar.set)
+		self.scrollbar.grid(row=0,column=3,rowspan=3,sticky=E)
+		
+		self.canvas.grid(row=1,column=0,columnspan=3)
+		self.canvas.create_window((1,1),height=900,width=850, window=self.frame_edit_profil)
+		#height=880,width=880
+		self.canvas.configure(scrollregion=self.canvas.bbox("all"))	
+		
+
+
+	def sauvegarderProfil(self):
+		self.frame_edit_profil.sauvegarderProfil()
+
+
+class FrameEditProfilSemaine(Frame):
+	"""Cette frame contient tous le champs pour voir et editer les Courses"""
+	def __init__(self, parentFrame):
+		Frame.__init__(self,parentFrame)
+		self.parentFrame=parentFrame	
 		
 		#On va creer un list de Frame qui contiendra chaque jour de l'annee
 		#Le profil de la semaine sera seriliser grace a pickle car on serilisera
 		#la liste des frame
-		#On construit la liste qui contient les recettes
+		#On construit la liste qui contient les Courses
 		list_repas = ["Samedi midi","Samedi soir",
 				"Dimanche midi","Dimanche soir",
 				"Lundi midi","Lundi soir",		
@@ -41,7 +71,7 @@ class Frame_Edit_ProfilSemaine(Frame):
 			print("getProfil en erreur, on cree les profils de 0")
 			for i,repas in enumerate(list_repas):
 				profil_jour=profilJour(repas)
-				frame_profil_jour=LabelFrame_ProfilJour(self,profil_jour)
+				frame_profil_jour=FrameDayProfile(self,profil_jour)
 				frame_profil_jour.pack()
 				self.list_profil_jour.append(profil_jour)
 				self.list_frame_profil_jour.append(frame_profil_jour)
@@ -50,7 +80,8 @@ class Frame_Edit_ProfilSemaine(Frame):
 			#on creer la frame a partir des profils retrouves
 			print("les profils sont retrouves")
 			for i,profil in enumerate(self.list_profil_jour):
-				frame_profil_jour=LabelFrame_ProfilJour(self,profil)
+				#if self.var_bouton_hide.get() != 1 or (self.var_bouton_hide.get() == 1 and profil.actif is True) :
+				frame_profil_jour=FrameDayProfile(self,profil)
 				frame_profil_jour.pack()
 				self.list_frame_profil_jour.append(frame_profil_jour)
 
@@ -162,7 +193,7 @@ class Frame_Edit_ProfilSemaine(Frame):
 
 
 
-class LabelFrame_ProfilJour(LabelFrame):
+class FrameDayProfile(LabelFrame):
 	"""Cette LabelFrame va etre repete pour chaque repas de la semaine
 	elle contient comme attribut un profilJour"""
 	def __init__(self,parentFrame,profil_jour):
@@ -219,13 +250,6 @@ class LabelFrame_ProfilJour(LabelFrame):
 		self.var_invite=IntVar()
 		self.bouton_invite = Checkbutton(self,text="Des invites sont prevus",variable=self.var_invite)
 		self.bouton_invite.pack(fill=Y,side=LEFT)
-
-
-
-
-
-
-
 
 
 
